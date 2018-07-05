@@ -3,5 +3,6 @@ extern crate chrono;
 extern crate diesel;
 extern crate dotenv;
 
+pub mod authentication;
 pub mod database;
 pub mod schema;
