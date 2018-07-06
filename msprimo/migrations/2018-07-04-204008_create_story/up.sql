@@ -3,5 +3,6 @@ CREATE TABLE stories (
   title VARCHAR NOT NULL,
   body TEXT NOT NULL,
   published BOOLEAN NOT NULL DEFAULT 'f',
-  publish_date DATE NOT NULL
+  publish_date DATE NOT NULL,
+  user_id integer NOT NULL
 )

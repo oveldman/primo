@@ -11,8 +11,9 @@ extern crate msprimo;
 use rocket::response::NamedFile;
 use rocket_contrib::Template;
 use std::path::Path;
-use rocket::Request;
-use msprimo::database;
+use msprimo::authentication;
+use msprimo::ErrorPossible;
+use rocket::http::{Cookie, Cookies};
 
 #[get("/")]
 fn index() -> Template{
@@ -20,10 +21,15 @@ fn index() -> Template{
 }
 
 #[get("/test")]
-fn test_methode() -> String {
-    database::upload_story("test2", "Dit is een andere test!");
-    database::get_stories();
-    "Done".to_string()
+fn test_method() -> String {
+    let done: ErrorPossible = authentication::sign_in("test2@test.nl","Test1234", "Oscar");
+    done.message.to_string()
+}
+
+#[get("/login")]
+fn login(mut cookies: Cookies) -> String {
+    let done: ErrorPossible = authentication::login(cookies,"test2@test.nl","Test1234");
+    done.message.to_string()
 }
 
 #[get("/bootstrap/<file_type>/<file>")]
@@ -46,8 +52,12 @@ fn not_found() -> Template {
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, test_methode, content_files, bootstrap_files])
+        .mount("/", routes![index, test_method, login, content_files, bootstrap_files])
         .attach(Template::fairing())
         .catch(errors![not_found])
         .launch();
+}
+
+fn get_login_token(){
+
 }
