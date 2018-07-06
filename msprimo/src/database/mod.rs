@@ -1,6 +1,7 @@
 pub mod models;
 pub mod story;
 pub mod account;
+pub mod session;
 
 use diesel::prelude::*;
 use diesel::pg::PgConnection;

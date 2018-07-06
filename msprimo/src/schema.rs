@@ -8,6 +8,14 @@ table! {
 }
 
 table! {
+    sessions (id) {
+        id -> Int4,
+        user_id -> Int4,
+        cookie_token -> Varchar,
+    }
+}
+
+table! {
     stories (id) {
         id -> Int4,
         title -> Varchar,
@@ -20,5 +28,6 @@ table! {
 
 allow_tables_to_appear_in_same_query!(
     accounts,
+    sessions,
     stories,
 );

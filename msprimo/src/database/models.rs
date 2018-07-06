@@ -1,6 +1,7 @@
 use chrono::NaiveDate;
 use schema::stories;
 use schema::accounts;
+use schema::sessions;
 
 #[derive(Queryable)]
 pub struct Story {
@@ -36,4 +37,18 @@ pub struct NewAccount<'b> {
     pub username: &'b str,
     pub password: &'b str,
     pub first_name: &'b str,
+}
+
+#[derive(Queryable)]
+pub struct Session {
+    pub id: i32,
+    pub user_id: i32,
+    pub cookie_token: String,
+}
+
+#[derive(Insertable)]
+#[table_name="sessions"]
+pub struct NewSession<'c> {
+    pub user_id: &'c i32,
+    pub cookie_token: &'c str,
 }
