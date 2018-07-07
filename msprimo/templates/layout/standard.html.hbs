@@ -12,6 +12,9 @@
 
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/content/css/main.css" rel="stylesheet">
+    {{#if sign_in}}
+        <link href="/content/css/signin.css" rel="stylesheet">
+    {{/if}}
 </head>
 
 <body>
@@ -45,6 +48,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Stage</a>
                 </li>
+                {{#if admin_access}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="#">Panel</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </li>
+                {{/if}}
             </ul>
         </div>
     </nav>

@@ -26,6 +26,17 @@ pub fn login<'b>(cookies: Cookies, username: &'b str, password: &'b str) -> Erro
     error
 }
 
+pub fn logout<'c>(cookies: Cookies, token: &'c str) -> bool {
+    let current_sessions: Vec<Session> = session::get_session(token);
+
+    if current_sessions.len() > 0 {
+        session::remove_session(&current_sessions[0].user_id);
+        remove_token_cookies(cookies)
+    }
+
+    true
+}
+
 pub fn sign_in<'b>(username: &'b str, password: &'b str, first_name: &'b str) -> ErrorPossible {
     let mut error = ErrorPossible {
         succeed: true,
@@ -44,6 +55,7 @@ pub fn sign_in<'b>(username: &'b str, password: &'b str, first_name: &'b str) ->
     error
 }
 
+// TODO Create expired token
 pub fn check_authorization<'b>(token: &'b str) -> bool {
     let mut found_session: bool = false;
     let current_session: Vec<Session> = session::get_session(token);
@@ -59,4 +71,8 @@ fn generate_token<'b>(mut cookies: Cookies, user_id: &'b i32) {
     let login_token = Uuid::new_v4();
     session::new_session(&login_token.to_string(), user_id);
     cookies.add(Cookie::new(TOKEN_NAME, login_token.to_string()));
+}
+
+fn remove_token_cookies(mut cookies: Cookies){
+    cookies.remove_private(Cookie::named(TOKEN_NAME));
 }
